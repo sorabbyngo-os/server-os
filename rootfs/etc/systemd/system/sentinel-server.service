@@ -1,0 +1,17 @@
+[Unit]
+Description=Sentinel Runtime — security operations and audit
+After=nats-cluster.service cyberwall-server.service
+Requires=nats-cluster.service
+
+[Service]
+Type=simple
+ExecStart=/opt/sorabbyngo/bin/sentinel-runtime \
+    --mode=server \
+    --audit-path=/var/log/sorabbyngo/sentinel-audit.jsonl
+Restart=always
+RestartSec=5
+User=sorabbyngo
+OOMScoreAdjust=-700
+
+[Install]
+WantedBy=server.target

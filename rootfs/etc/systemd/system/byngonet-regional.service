@@ -1,0 +1,19 @@
+[Unit]
+Description=Byngonet Regional Node — intelligence mesh hub
+After=nats-cluster.service network.target
+Requires=nats-cluster.service
+
+[Service]
+Type=simple
+ExecStart=/opt/sorabbyngo/bin/byngonet \
+    --mode=regional \
+    --transport=tcp,udp \
+    --zone=PRIME
+Restart=always
+RestartSec=5
+User=sorabbyngo
+Environment=NATS_URL=nats://localhost:4222
+LimitNOFILE=100000
+
+[Install]
+WantedBy=server.target

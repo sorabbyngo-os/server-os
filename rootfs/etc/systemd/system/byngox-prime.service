@@ -1,0 +1,23 @@
+[Unit]
+Description=Byngox Prime — vLLM inference cluster (DeepSeek-R1 70B)
+After=nats-cluster.service network.target
+Requires=nats-cluster.service
+
+[Service]
+Type=simple
+ExecStart=/opt/sorabbyngo/bin/vllm serve deepseek-r1:70b \
+    --host 0.0.0.0 \
+    --port 8000 \
+    --tensor-parallel-size 4 \
+    --max-model-len 32768 \
+    --gpu-memory-utilization 0.90
+Restart=on-failure
+RestartSec=10
+User=sorabbyngo
+Environment=CUDA_VISIBLE_DEVICES=0,1,2,3
+Environment=NATS_URL=nats://localhost:4222
+OOMScoreAdjust=-900
+TimeoutStartSec=300
+
+[Install]
+WantedBy=server.target

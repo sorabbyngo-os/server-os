@@ -1,0 +1,8 @@
+[Unit]
+Description=Server OS — Infrastructure Target
+Requires=multi-user.target
+After=multi-user.target
+Documentation=https://github.com/sorabbyngo-Labs/server-os
+
+[Install]
+WantedBy=multi-user.target
