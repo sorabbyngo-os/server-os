@@ -1,0 +1,23 @@
+[Unit]
+Description=Sorabbyngo Byngox Prime — vLLM Inference Cluster
+After=network.target
+Documentation=https://github.com/sorabbyngo-Labs/server-os
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sorabbyngo/server-os.conf
+ExecStartPre=/bin/bash -c 'nvidia-smi || (echo "No GPU detected" && exit 1)'
+ExecStart=/usr/local/bin/python3 -m vllm.entrypoints.openai.api_server \
+    --model deepseek-ai/DeepSeek-R1-Distill-Llama-70B \
+    --tensor-parallel-size ${PRIME_GPU_COUNT:-1} \
+    --host 0.0.0.0 \
+    --port ${PRIME_VLLM_PORT:-8000} \
+    --served-model-name deepseek-r1:70b \
+    --max-model-len 32768
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

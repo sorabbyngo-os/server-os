@@ -1,0 +1,40 @@
+# Sorabbyngo Server OS — Kernel Configuration Fragment
+# High-throughput server variant for hospital servers and Byngox Prime clusters
+
+# High-performance networking
+CONFIG_XDP_SOCKETS=y
+CONFIG_AF_XDP=y
+CONFIG_BPF_JIT=y
+CONFIG_NET_SCH_DEFAULT=y
+CONFIG_TCP_CONG_BBR=y
+CONFIG_DEFAULT_BBR=y
+
+# io_uring — high-throughput async I/O
+CONFIG_IO_URING=y
+
+# NUMA support — multi-socket server optimization
+CONFIG_NUMA=y
+CONFIG_NUMA_BALANCING=y
+
+# Large memory support
+CONFIG_X86_PAE=y
+CONFIG_HIGHMEM64G=y
+
+# ZFS / Btrfs for data integrity
+CONFIG_BTRFS_FS=y
+CONFIG_BTRFS_FS_POSIX_ACL=y
+
+# Virtualization — KVM for running Byngox Prime in VMs
+CONFIG_KVM=y
+CONFIG_KVM_INTEL=y
+CONFIG_KVM_AMD=y
+CONFIG_VHOST_NET=y
+
+# IPMI out-of-band management
+CONFIG_ACPI_IPMI=y
+CONFIG_IPMI_HANDLER=y
+CONFIG_IPMI_DEVICE_INTERFACE=y
+
+# Sorabbyngo modules
+CONFIG_SORABBYNGO_NODEID=m
+CONFIG_BYNGONET_IDENTITY=m

@@ -1,0 +1,15 @@
+[Unit]
+Description=Sorabbyngo DMZ — One-Way Wall to Byngox Prime
+After=sorabbyngo-nats.service sorabbyngo-prime.service
+Requires=sorabbyngo-nats.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/sorabbyngo/dmz/dmz_service.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
