@@ -4,7 +4,7 @@
 
 ---
 
-The infrastructure surface of SORABBYNGO OS. Server OS powers hospital servers, Byngonet regional nodes, Byngox Prime inference clusters, and data centers across Africa.
+The infrastructure surface of SORABBYNGO OS. Server OS powers hospital servers, Byngonet regional nodes, Byngox Prime inference clusters, and smart city infrastructure. Built for high throughput, high availability, and AI-native workloads.
 
 ---
 
@@ -12,13 +12,13 @@ The infrastructure surface of SORABBYNGO OS. Server OS powers hospital servers, 
 
 ```mermaid
 graph TD
-    BOOT["GRUB"] --> KERNEL["Linux 6.x-sorabbyngo-server\nx86_64 · XDP · io_uring · huge pages"]
+    BOOT["GRUB"] --> KERNEL["Linux 6.x-sorabbyngo-server\nx86_64 · XDP · io_uring · ZFS"]
     KERNEL --> IDENTITY["sorabbyngo-identity.service\nNodeID hardware seal"]
-    IDENTITY --> CW["cyberwall-server.service\nFull eBPF/XDP mode on eth0"]
-    CW --> NATS["nats-cluster.service\nJetStream cluster — 100k connections"]
-    NATS --> SENTINEL["sentinel-server.service\nSecurity ops + audit ledger"]
-    NATS --> BYNGONET["byngonet-regional.service\nPRIME zone mesh hub"]
-    NATS --> PRIME["byngox-prime.service\nvLLM — DeepSeek-R1 70B\n4x GPU tensor parallel"]
+    IDENTITY --> CW["cyberwall-server.service\nFull defence mode — before all services"]
+    CW --> DMZ["dmz-gateway.service\nOne-way wall — PRIME zone isolation"]
+    CW --> NATS["nats-cluster.service\nJetStream cluster — message bus"]
+    NATS --> PRIME["byngox-prime.service\nDeepSeek-R1 70B — 4x GPU tensor parallel"]
+    NATS --> BYNGONET["byngonet-server.service\nRegional intelligence hub"]
     PRIME --> TARGET["server.target\nOS ready"]
 ```
 
@@ -27,16 +27,16 @@ graph TD
 ## Deployment roles
 
 ```bash
-# Hospital server — Novela backend + patient records
+# Hospital server — Novela backend + Byngox Prime
 ROLE=hospital bash scripts/build.sh
 
-# Byngox Prime cluster — H100/A100 vLLM inference
+# Byngox Prime cluster — H100/A100 inference only
 ROLE=prime bash scripts/build.sh
 
-# Byngonet regional node — intelligence mesh hub
+# Byngonet regional hub — mesh intelligence node
 ROLE=regional bash scripts/build.sh
 
-# Smart city infrastructure
+# Smart city infrastructure node
 ROLE=city bash scripts/build.sh
 ```
 
@@ -46,12 +46,13 @@ ROLE=city bash scripts/build.sh
 
 | Feature | How |
 |---|---|
-| High throughput | XDP networking + io_uring — kernel bypass I/O |
-| AI inference | vLLM — DeepSeek-R1 70B, 4x tensor parallel |
-| Message bus | NATS JetStream cluster — 100k connections, 8MB payload |
-| Data integrity | ZFS / Btrfs with checksumming |
-| Full security | Cyberwall eBPF/XDP — hardware-level packet filtering |
-| High availability | 3-node NATS cluster, automatic failover |
+| XDP networking | Kernel-bypass packet processing — line rate |
+| io_uring | Async I/O — no syscall overhead |
+| Byngox Prime | DeepSeek-R1 70B — 4x GPU tensor parallel via vLLM |
+| NATS JetStream | Clustered message bus — 1M msg/s |
+| DMZ gateway | One-way wall — PRIME zone never touches external |
+| ZFS/Btrfs | Data integrity — checksums, snapshots, RAID-Z |
+| IPMI | Out-of-band management |
 
 ---
 
@@ -59,24 +60,12 @@ ROLE=city bash scripts/build.sh
 
 | Service | Role | Priority |
 |---|---|---|
-| `cyberwall-server.service` | Full eBPF/XDP security | Starts first |
-| `nats-cluster.service` | JetStream message bus | OOM -800 |
-| `byngox-prime.service` | vLLM inference (prime role) | OOM -900 |
-| `byngonet-regional.service` | PRIME zone mesh hub | — |
-| `sentinel-server.service` | Security ops + audit | OOM -700 |
+| `cyberwall-server.service` | Full defence — starts first | OOM -800 |
+| `dmz-gateway.service` | PRIME zone isolation | OOM -900 |
+| `nats-cluster.service` | JetStream cluster | OOM -800 |
+| `byngox-prime.service` | vLLM inference — 4x GPU | OOM -1000 |
+| `byngonet-server.service` | Regional mesh hub | Standard |
 | `server.target` | Default boot target | — |
-
----
-
-## NATS cluster
-
-3-node cluster for high availability. Configure node names via environment:
-
-```bash
-SERVER_NAME=node1 systemctl start nats-cluster
-```
-
-Nodes: `node1/2/3.sorabbyngo.internal:6222`
 
 ---
 

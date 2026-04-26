@@ -1,0 +1,17 @@
+[Unit]
+Description=DMZ Gateway — one-way wall between PRIME and external zones
+After=cyberwall-server.service byngonet-server.service
+Requires=cyberwall-server.service
+
+[Service]
+Type=simple
+ExecStart=/opt/sorabbyngo/bin/dmz-gateway \
+    --config=/etc/sorabbyngo/dmz.yaml \
+    --prime-zone=192.168.100.0/24
+Restart=always
+RestartSec=5
+User=root
+OOMScoreAdjust=-900
+
+[Install]
+WantedBy=server.target

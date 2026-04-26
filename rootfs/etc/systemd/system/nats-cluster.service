@@ -1,7 +1,7 @@
 [Unit]
 Description=NATS JetStream Cluster — Sorabbyngo message bus
 After=network.target sorabbyngo-identity.service
-Before=byngox-prime.service novela-server.service
+Before=byngox-prime.service novela-backend.service
 
 [Service]
 Type=simple
@@ -10,7 +10,6 @@ Restart=always
 RestartSec=3
 User=nats
 LimitNOFILE=1000000
-LimitNPROC=65536
 OOMScoreAdjust=-800
 
 [Install]

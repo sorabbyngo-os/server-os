@@ -1,14 +1,12 @@
 [Unit]
-Description=Cyberwall — Server OS security (full eBPF/XDP mode)
+Description=Cyberwall — Server OS full defence mode
 After=network.target sorabbyngo-identity.service
 Before=nats-cluster.service
 
 [Service]
 Type=simple
 ExecStart=/opt/sorabbyngo/bin/cyberwall \
-    --config=/etc/sorabbyngo/cyberwall-server.yaml \
-    --ebpf \
-    --xdp-interface=eth0
+    --config=/etc/sorabbyngo/cyberwall-server.yaml
 Restart=always
 RestartSec=3
 User=root

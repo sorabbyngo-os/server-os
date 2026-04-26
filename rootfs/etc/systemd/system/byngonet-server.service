@@ -1,0 +1,18 @@
+[Unit]
+Description=Byngonet Server Node — regional intelligence hub
+After=nats-cluster.service
+Requires=nats-cluster.service
+
+[Service]
+Type=simple
+ExecStart=/opt/sorabbyngo/bin/byngonet \
+    --mode=server \
+    --role=regional-hub \
+    --transport=tcp,wifi
+Restart=always
+RestartSec=5
+User=sorabbyngo
+Environment=NATS_URL=nats://localhost:4222
+
+[Install]
+WantedBy=server.target
