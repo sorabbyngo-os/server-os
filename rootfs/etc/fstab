@@ -1,0 +1,8 @@
+# Server OS fstab — high throughput infrastructure
+# <device>      <mount>         <type>  <options>                           <dump> <pass>
+/dev/nvme0n1p1  /boot           vfat    ro,noatime                          0      2
+/dev/nvme0n1p2  /               ext4    rw,noatime,data=writeback           0      1
+/dev/nvme0n1p3  /var/lib/docker ext4    rw,noatime,nodev                    0      2
+/dev/nvme0n1p4  /opt/sorabbyngo ext4    rw,noatime                          0      2
+tmpfs           /tmp            tmpfs   rw,nosuid,size=4G                   0      0
+tmpfs           /run            tmpfs   rw,nosuid,nodev                     0      0
