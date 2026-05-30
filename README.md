@@ -73,9 +73,9 @@ ROLE=city bash scripts/build.sh
 
 | OS Surface | Role |
 |---|---|
-| [Byngo OS](https://github.com/sorabbyngo-Labs/byngo-os) | Consumer devices |
-| [Novela OS](https://github.com/sorabbyngo-Labs/novela-os) | Medical equipment |
-| [Edge OS](https://github.com/sorabbyngo-Labs/edge-os) | IoT, drones, vehicles |
+| [Byngo OS](https://github.com/sorabbyngo-os/byngo-os) | Consumer devices |
+| [Novela OS](https://github.com/sorabbyngo-os/novela-os) | Medical equipment |
+| [Edge OS](https://github.com/sorabbyngo-os/edge-os) | IoT, drones, vehicles |
 | **Server OS** | Infrastructure — this repo |
 
 ---
